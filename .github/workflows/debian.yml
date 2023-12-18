@@ -32,3 +32,6 @@ jobs:
           apt-get install build-essential
           apt-get install $(cat debian/.debian-ci/"${CI_JOB_NAME}"/build-depends)
           adduser --system --group --disabled-password --shell /bin/sh --home "$CI_PROJECT_DIR"/build-env "${BUILDUSER}"
+      - name: Build from Source
+        run: |
+          ls -la
