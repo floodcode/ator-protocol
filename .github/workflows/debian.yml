@@ -7,6 +7,7 @@ on:
 
 env:
   DEBIAN_FRONTEND: noninteractive
+  SPECIAL: bpo12
 
 jobs:
   build-source:
@@ -59,6 +60,16 @@ jobs:
           upstream_version="$(head -n1 source-packages/version.txt)"
           if [ -z "$upstream_version" ]; then echo >&2 "Did not get package version from artifact."; exit 1; fi
           echo $upstream_version
+
+          case "$SPECIAL" in
+            "") echo "No special handling required";;
+            bpo*)
+              echo "deb https://deb.debian.org/debian bookworm-backports main" >> /etc/apt/sources.list.d/debian-bpo.list &&
+              apt update &&
+              srcchanges="$(ls -1 source-packages/tor_"$upstream_version"*"$SPECIAL"+*_src.changes)"
+              ;;
+            *) echo "Unknown special flag: $SPECIAL"; exit 1;;
+          esac
 
           srcchanges="$(ls -1 source-packages/tor_"$upstream_version"*bookworm+*_src.changes)"
           echo "srcchanges: $srcchanges"
