@@ -28,5 +28,5 @@ jobs:
       - name: Build from Source
         run: |
           ls -la
-          sudo -i -u "${BUILDUSER}" --preserve-env=GITHUB_REF ./debian/.debian-ci/build_source/build-script
+          sudo -i -u "${BUILDUSER}" --preserve-env=GITHUB_REF $(pwd)/debian/.debian-ci/build_source/build-script
           mv -v --no-target-directory build-env/RESULT source-packages
