@@ -16,7 +16,9 @@ jobs:
       image: debian:bookworm
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
       - name: Setup
         run: |
           rm -rf build-env
@@ -25,6 +27,7 @@ jobs:
           apt-get -y install sudo build-essential
           apt-get -y install $(cat debian/.debian-ci/build_source/build-depends)
           adduser --system --group --disabled-password --shell /bin/sh --home /build-env "${BUILDUSER}"
+          git config --global --add safe.directory $(realpath .)
       - name: Build from Source
         run: |
           ls -la
