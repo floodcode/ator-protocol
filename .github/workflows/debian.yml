@@ -18,22 +18,15 @@ jobs:
       - name: Setup
         run: |
           rm -rf build-env
-          # APT_CACHE_DIR="${PWD}/apt-cache" &&
-          # mkdir -p "${APT_CACHE_DIR}" &&
-          cat > /etc/apt/apt.conf.d/90-gitlab << EOF &&
-          APT::Install-Recommends "0";
-          APT::Acquire::Retries "5";
-          APT::Get::Assume-Yes "true";
-          // Dir::Cache::Archives "${APT_CACHE_DIR}";
-          EOF
-          apt-get update &&
+          apt-get update
           apt-get dist-upgrade
           apt-get install sudo
           apt-get install build-essential
-          apt-get install $(cat debian/.debian-ci/"${CI_JOB_NAME}"/build-depends)
-          adduser --system --group --disabled-password --shell /bin/sh --home "$CI_PROJECT_DIR"/build-env "${BUILDUSER}"
+          apt-get install $(cat debian/.debian-ci/build_source/build-depends)
+          adduser --system --group --disabled-password --shell /bin/sh --home /build-env "${BUILDUSER}"
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Build from Source
         run: |
-          ls -la
+          sudo -i -u "${BUILDUSER}" --preserve-env=GITHUB_REF src/debian-tor/debian/.debian-ci/build_source/build-script
+          mv -v --no-target-directory build-env/RESULT source-packages
