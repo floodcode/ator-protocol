@@ -7,7 +7,6 @@ on:
 
 env:
   DEBIAN_FRONTEND: noninteractive
-  DOCKER_ARCH: amd64
   SPECIAL: bpo12
 
 jobs:
@@ -42,13 +41,10 @@ jobs:
   build-binary:
     runs-on: ${{ matrix.build.runner }}
     strategy:
+      fail-fast: false
       matrix:
         build:
           # Debian amd64
-          - os: debian
-            suite: buster
-            arch: amd64
-            runner: ubuntu-latest
           - os: debian
             suite: 'bullseye'
             arch: amd64
@@ -59,10 +55,6 @@ jobs:
             runner: ubuntu-latest
 
           # Ubuntu amd64
-          - os: ubuntu
-            suite: 'bionic'
-            arch: amd64
-            runner: ubuntu-latest
           - os: ubuntu
             suite: 'focal'
             arch: amd64
