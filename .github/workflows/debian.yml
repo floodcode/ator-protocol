@@ -75,16 +75,16 @@ jobs:
     container:
       image: ${{ matrix.build.os }}:${{ matrix.build.suite }}
     steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: source-packages
-          path: source-packages/
       - name: Dependencies
         run: |
           apt-get -y update
           apt-get -y dist-upgrade
           apt-get -y install build-essential devscripts reprepro fakeroot
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: source-packages
+          path: source-packages/
       - name: Build Binary
         run: |
           find source-packages
