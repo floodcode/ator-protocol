@@ -77,12 +77,14 @@ ts="$(TZ=UTC date +%Y%m%dT%H%M%SZ)"
 echo "Building release tarball"
 echo "========================================"
 
+pushd .
+
 ./autogen.sh
 
 mkdir build-tree-dist
 cd build-tree-dist
 
-./configure --disable-silent-rules --enable-gcc-warnings
+"${pkggitdir}/configure" --disable-silent-rules --enable-gcc-warnings
 if [ "$(ls -1 *.tar.gz 2>/dev/null | wc -l)" != 0 ] ; then
     echo >&2 "We already have one .tar.gz file before make dist. Confused."
     exit 1
@@ -96,10 +98,14 @@ fi
 tgz="$(echo -n *.tar.gz)"
 tgz="$(readlink -f "$tgz")"
 
+popd
+
 # prepare debian source package
 ###############################
 echo "Prepearing Debian source package"
 echo "========================================"
+
+pushd .
 
 tardir="$(tar taf "$tgz" 2>/dev/null | head -n1)"
 tardir="${tardir%%/}"
@@ -154,3 +160,5 @@ for i in *changes; do dcmd mv -v $i RESULT; done
 echo "$build_version" > RESULT/version.txt
 echo "$debian_version" >> RESULT/version.txt
 mv RESULT ..
+
+popd
