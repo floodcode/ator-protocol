@@ -31,3 +31,7 @@ jobs:
       - name: Build from Source
         run: |
           $(pwd)/debian/.debian-ci/build_source/build-script
+      - uses: actions/upload-artifact@v4
+        with:
+          name: source-packages
+          path: source-packages/
