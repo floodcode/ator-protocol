@@ -63,7 +63,7 @@ rm -f *.tar.gz
 echo "Preparing upstream directory"
 echo "========================================"
 
-upstream_branch=$GITHUB_REF
+upstream_branch=$GITHUB_SHA
 rev_upstream_branch="$(git rev-parse --short=16 "$upstream_branch")"
 pkgrev="${rev_upstream_branch}"
 distribution="${pkg}-nightly-main"
