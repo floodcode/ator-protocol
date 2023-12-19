@@ -27,5 +27,6 @@ jobs:
         uses: actions/checkout@v2
       - name: Build from Source
         run: |
-          sudo -i -u "${BUILDUSER}" --preserve-env=GITHUB_REF debian/.debian-ci/build_source/build-script
+          ls -la
+          sudo -i -u "${BUILDUSER}" --preserve-env=GITHUB_REF ./debian/.debian-ci/build_source/build-script
           mv -v --no-target-directory build-env/RESULT source-packages
