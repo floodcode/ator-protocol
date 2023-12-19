@@ -48,6 +48,11 @@ jobs:
         with:
           name: source-packages
           path: source-packages/
+      - name: Dependencies
+        run: |
+          apt-get -y update
+          apt-get -y dist-upgrade
+          apt-get -y install build-essential
       - name: Setup
         run: |
           find source-packages
