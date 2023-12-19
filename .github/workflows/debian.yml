@@ -40,10 +40,20 @@ jobs:
           path: source-packages/
 
   build-binary:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      matrix:
+        - os: debian
+          suite: ['buster', 'bullseye', 'bookworm']
+          arch: amd64
+          runner: ubuntu-latest
+        - os: ubuntu
+          suite: ['bionic', 'focal', 'jammy']
+          arch: amd64
+          runner: ubuntu-latest
     needs: build-source
     container:
-      image: debian:bookworm
+      image: ${{ matrix.os }}:${{ matrix.suite }}
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v4
@@ -62,21 +72,11 @@ jobs:
           if [ -z "$upstream_version" ]; then echo >&2 "Did not get package version from artifact."; exit 1; fi
           echo $upstream_version
 
-          case "$SPECIAL" in
-            "") echo "No special handling required";;
-            bpo*)
-              echo "deb https://deb.debian.org/debian bookworm-backports main" >> /etc/apt/sources.list.d/debian-bpo.list &&
-              apt update &&
-              srcchanges="$(ls -1 source-packages/tor_"$upstream_version"*"$SPECIAL"+*_src.changes)"
-              ;;
-            *) echo "Unknown special flag: $SPECIAL"; exit 1;;
-          esac
-
-          srcchanges="$(ls -1 source-packages/tor_"$upstream_version"*bookworm+*_src.changes)"
+          srcchanges="$(ls -1 source-packages/tor_"$upstream_version"*${{ matrix.suite }}+*_src.changes)"
           echo "srcchanges: $srcchanges"
           if [ "$(echo "$srcchanges" | wc -l)" != 1 ] || [ -z "$srcchanges" ] ; then echo >&2 "Weird number of changes files found."; exit 1; fi
 
-          case "$DOCKER_ARCH" in
+          case "${{ matrix.arch }}" in
             amd64) build_selector="-b";;
             *)     build_selector="-B";;
           esac
@@ -103,7 +103,7 @@ jobs:
           dcmd ln -v "build-tree/${binchanges}" RESULT
           mkdir binary-packages
           echo "mv..."
-          mv -v --no-target-directory RESULT binary-packages/"debian-${DOCKER_ARCH}"
+          mv -v --no-target-directory RESULT binary-packages/"${{ matrix.os }}-${{ matrix.arch }}"
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
