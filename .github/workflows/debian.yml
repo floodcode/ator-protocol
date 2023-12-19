@@ -87,3 +87,8 @@ jobs:
           dcmd ln -v "build-tree/${binchanges}" RESULT
           mkdir binary-packages
           mv -v --no-target-directory RESULT binary-packages/"debian-${DOCKER_ARCH}"
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: binary-packages
+          path: binary-packages/
