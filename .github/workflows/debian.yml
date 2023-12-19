@@ -35,3 +35,16 @@ jobs:
         with:
           name: source-packages
           path: source-packages/
+
+    build-binary:
+    runs-on: ubuntu-latest
+    needs: build-source
+    container:
+      image: debian:bookworm
+    steps:
+      - name: Setup
+        run: |
+          find source-packages
+          upstream_version="$(head -n1 source-packages/version.txt)"
+          if [ -z "$upstream_version" ]; then echo >&2 "Did not get package version from artifact."; exit 1; fi
+          echo $upstream_version
