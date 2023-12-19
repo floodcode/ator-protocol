@@ -44,12 +44,31 @@ jobs:
     strategy:
       matrix:
         build:
+          # Debian amd64
           - os: debian
-            suite: ['buster', 'bullseye', 'bookworm']
+            suite: buster
+            arch: amd64
+            runner: ubuntu-latest
+          - os: debian
+            suite: 'bullseye'
+            arch: amd64
+            runner: ubuntu-latest
+          - os: debian
+            suite: 'bookworm'
+            arch: amd64
+            runner: ubuntu-latest
+
+          # Ubuntu amd64
+          - os: ubuntu
+            suite: 'bionic'
             arch: amd64
             runner: ubuntu-latest
           - os: ubuntu
-            suite: ['bionic', 'focal', 'jammy']
+            suite: 'focal'
+            arch: amd64
+            runner: ubuntu-latest
+          - os: ubuntu
+            suite: 'jammy'
             arch: amd64
             runner: ubuntu-latest
     needs: build-source
