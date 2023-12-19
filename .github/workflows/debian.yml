@@ -119,5 +119,5 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ator-protocol-{{ matrix.build.os }}-${{ matrix.build.suite }}-${{ matrix.build.arch }}
+          name: ator-protocol-${{ matrix.build.os }}-${{ matrix.build.suite }}-${{ matrix.build.arch }}
           path: binary-packages/
