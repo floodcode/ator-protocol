@@ -17,6 +17,7 @@ jobs:
   build-and-push:
     runs-on: ${{ matrix.platform.runs-on }}
     strategy:
+      fail-fast: false
       matrix:
         platform:
           - name: linux/amd64
