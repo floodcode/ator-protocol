@@ -157,10 +157,10 @@ for i in *.dsc; do
     rm -r "$ddir"
 done
 
-mkdir RESULT
-for i in *changes; do dcmd mv -v $i RESULT; done
-echo "$build_version" > RESULT/version.txt
-echo "$debian_version" >> RESULT/version.txt
-mv RESULT ..
+mkdir source-packages
+for i in *changes; do dcmd mv -v $i source-packages; done
+echo "$build_version" > source-packages/version.txt
+echo "$debian_version" >> source-packages/version.txt
+mv source-packages ..
 
 popd

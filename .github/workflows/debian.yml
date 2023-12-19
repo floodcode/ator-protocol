@@ -30,6 +30,4 @@ jobs:
           git config --global --add safe.directory $(realpath .)
       - name: Build from Source
         run: |
-          ls -la
           $(pwd)/debian/.debian-ci/build_source/build-script
-          mv -v --no-target-directory build-env/RESULT source-packages
