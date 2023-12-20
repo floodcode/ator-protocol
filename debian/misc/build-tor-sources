@@ -310,7 +310,7 @@ main() {
 
 usage() {
   cat << EOF
-Usage: $0 [-B] <ator-xyz.tar.gz>
+Usage: $0 [-B] <tor-xyz.tar.gz>
 EOF
 }
 
@@ -342,7 +342,7 @@ case "$(basename $0)" in
 			echo >&2 "\$GITDIR does not exist or does not have a .git.  It needs to point to the tor git repository."
 			exit 1
 		fi
-		PKG="ator"
+		PKG="tor"
 		DO_BPO=1
 		main "${1:-}" ${2:-1} $GITDIR $PKG
 		;;
