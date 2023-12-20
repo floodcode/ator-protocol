@@ -51,7 +51,7 @@ fudge_upstream_version() {
   fi
 }
 
-pkg=tor
+pkg=ator
 
 pkggitdir="$(readlink -f .)"
 debgitdir="$(readlink -f .)"
