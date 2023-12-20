@@ -32,7 +32,7 @@ def find_version(infile):
     configure.ac file, find the current version line.
     """
     for line in infile:
-        m = re.search(r'AC_INIT\(\[ator\],\s*\[([^\]]*)\]\)', line)
+        m = re.search(r'AC_INIT\(\[tor\],\s*\[([^\]]*)\]\)', line)
         if m:
             return m.group(1)
 
